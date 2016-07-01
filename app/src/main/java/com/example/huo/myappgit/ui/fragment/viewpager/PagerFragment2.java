@@ -27,7 +27,7 @@ public class PagerFragment2 extends BaseFragment {
     ImageView mIvBubble2;
     @BindView(R.id.ivBubble3)
     ImageView mIvBubble3;
-    Animation mAnimation;
+    Animation mAnimation,mAnimation1,mAnimation2;
 
     public PagerFragment2() {
         // Required empty public constructor
@@ -49,6 +49,8 @@ public class PagerFragment2 extends BaseFragment {
         mIvBubble2.setVisibility(View.INVISIBLE);
         mIvBubble3.setVisibility(View.INVISIBLE);
         mAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.translate);
+        mAnimation1 = AnimationUtils.loadAnimation(getActivity(), R.anim.translate1);
+        mAnimation2 = AnimationUtils.loadAnimation(getActivity(), R.anim.translate2);
         showAnim();
     }
 
@@ -59,11 +61,11 @@ public class PagerFragment2 extends BaseFragment {
         }
         if (mIvBubble2.getVisibility() == View.INVISIBLE) {
             mIvBubble2.setVisibility(View.VISIBLE);
-            mIvBubble2.setAnimation(mAnimation);
+            mIvBubble2.setAnimation(mAnimation1);
         }
         if (mIvBubble3.getVisibility() == View.INVISIBLE) {
             mIvBubble3.setVisibility(View.VISIBLE);
-            mIvBubble3.setAnimation(mAnimation);
+            mIvBubble3.setAnimation(mAnimation2);
         }
     }
 }

@@ -84,16 +84,18 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_phone"
         android:layout_width="match_parent"
-        android:alpha="0.5"
-        android:layout_height="match_parent"
+        android:layout_height="430dp"
+        app:layout_constraintTop_toTopOf="@id/constraintLayout4"
         app:layout_constraintBottom_toTopOf="@+id/ll_icon">
 
         <ImageView
             android:id="@+id/iv_phone"
-            android:layout_marginLeft="12dp"
+            android:scaleType="fitCenter"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="12dp"
             android:src="@mipmap/phone"/>
 
         <ImageView
@@ -106,12 +108,14 @@
             android:src="@mipmap/screen_blank_large"/>
 
         <ImageView
+            android:id="@+id/iv_phone_show"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_marginBottom="75dp"
             android:layout_marginTop="60dp"
+            android:alpha="0"
             android:src="@mipmap/screen_large"/>
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

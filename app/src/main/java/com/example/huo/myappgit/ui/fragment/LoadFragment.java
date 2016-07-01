@@ -3,18 +3,18 @@ package com.example.huo.myappgit.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.example.huo.myappgit.R;
 import com.example.huo.myappgit.adapter.LoadAdapter;
 import com.example.huo.myappgit.base.BaseFragment;
+import com.example.huo.myappgit.ui.activity.MainActivity;
 import com.example.huo.myappgit.ui.fragment.viewpager.PagerFragment;
 
 import butterknife.BindView;
@@ -36,11 +36,21 @@ public class LoadFragment extends BaseFragment {
     @BindView(R.id.iv_load2)
     ImageView mIvLoad2;
     ImageView[] icon;
+    @BindView(R.id.iv_phone_show)
+    ImageView mIvPhoneShow;
+    @BindView(R.id.rl_phone)
+    RelativeLayout mRlPhone;
+    MainActivity mMainActivity;
 
     public LoadFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mMainActivity = (MainActivity) getActivity();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,7 +67,7 @@ public class LoadFragment extends BaseFragment {
         mAdapter = new LoadAdapter(getFragmentManager());
         mVpLoad.setAdapter(mAdapter);
         mVpLoad.addOnPageChangeListener(getListener());
-        PagerFragment fragment= (PagerFragment) mAdapter.getItem(0);
+        PagerFragment fragment = (PagerFragment) mAdapter.getItem(0);
 //        fragment.showAnim();
     }
 
@@ -67,6 +77,20 @@ public class LoadFragment extends BaseFragment {
             @Override
             public void onPageScrolled(int position, float positionOffset, int
                     positionOffsetPixels) {
+                if (position == 0) {
+                    float v = 0.2f + 0.8f * positionOffset;
+                    mRlPhone.setScaleX(v);
+                    mRlPhone.setScaleY(v);
+                    float v1 = mMainActivity.getWidth() / 3 * (positionOffset - 1);
+                    mRlPhone.setTranslationX(v1);
+                    float v2 = mMainActivity.getHeight() / 8 * (1-positionOffset );
+                    mRlPhone.setTranslationY(v2);
+                    mIvPhoneShow.setAlpha(positionOffset);
+                    return;
+                }
+                if (position == 1) {
+                    mRlPhone.setTranslationX(-positionOffsetPixels);
+                }
 
             }
 

@@ -22,15 +22,15 @@ public class BaseActivity extends AppCompatActivity {
         initEvent();
     }
 
-    private void initEvent() {
+    public void initEvent() {
 
     }
 
-    private void initData() {
+    public void initData() {
 
     }
 
-    private void initView() {
+    public void initView() {
     }
     public void showToast(String data) {
         Toast.makeText(getApplicationContext(), data, Toast.LENGTH_SHORT).show();
