@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="round_view">
+        <attr name="height" format="dimension"/>
+        <attr name="wight" format="dimension"/>
+        <attr name="padding" format="dimension"/>
+        <attr name="background_color" format="color"/>
+    </declare-styleable>
+    <attr name="borderRadius" format="dimension"/>
+    <attr name="type">
+        <enum name="circle" value="0"/>
+        <enum name="round" value="1"/>
+    </attr>
+    <attr name="src" format="reference"></attr>
+
+    <declare-styleable name="CustomImageView">
+        <attr name="borderRadius"/>
+        <attr name="type"/>
+        <attr name="src"/>
+    </declare-styleable>
+</resources>

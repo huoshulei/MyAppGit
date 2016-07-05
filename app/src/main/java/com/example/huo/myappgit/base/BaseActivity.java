@@ -1,6 +1,7 @@
 package com.example.huo.myappgit.base;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -32,6 +33,11 @@ public class BaseActivity extends AppCompatActivity {
 
     public void initView() {
     }
+
+    public Typeface getTypeface() {
+        return Typeface.createFromAsset(getAssets(), "ttf/typeface.ttf");
+    }
+
     public void showToast(String data) {
         Toast.makeText(getApplicationContext(), data, Toast.LENGTH_SHORT).show();
     }

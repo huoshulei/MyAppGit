@@ -1,5 +1,6 @@
 package com.example.huo.myappgit.base;
 
+import android.animation.ArgbEvaluator;
 import android.app.Fragment;
 import android.os.Bundle;
 
@@ -8,8 +9,16 @@ import android.os.Bundle;
  */
 
 public class BaseFragment extends Fragment {
+    ArgbEvaluator argbEvaluator;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    public ArgbEvaluator getArgbEvaluator() {
+        if (argbEvaluator == null)
+            argbEvaluator = new ArgbEvaluator();
+        return argbEvaluator;
     }
 }

@@ -1,6 +1,10 @@
 package com.example.huo.myappgit.ui.fragment;
 
 
+import android.animation.ArgbEvaluator;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
@@ -10,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.huo.myappgit.R;
 import com.example.huo.myappgit.adapter.LoadAdapter;
@@ -19,6 +24,7 @@ import com.example.huo.myappgit.ui.fragment.viewpager.PagerFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link BaseFragment} subclass.
@@ -41,6 +47,10 @@ public class LoadFragment extends BaseFragment {
     @BindView(R.id.rl_phone)
     RelativeLayout mRlPhone;
     MainActivity mMainActivity;
+    @BindView(R.id.tv_load)
+    TextView mTvLoad;
+    @BindView(R.id.tv_not_load)
+    TextView mTvNotLoad;
 
     public LoadFragment() {
         // Required empty public constructor
@@ -59,6 +69,9 @@ public class LoadFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_load, container, false);
         ButterKnife.bind(this, view);
         icon = new ImageView[]{mIvLoad0, mIvLoad1, mIvLoad2};
+//        Typeface typeface = mMainActivity.getTypeface();
+//        mTvLoad.setTypeface(typeface);
+//        mTvNotLoad.setTypeface(typeface);
         return view;
     }
 
@@ -67,28 +80,33 @@ public class LoadFragment extends BaseFragment {
         mAdapter = new LoadAdapter(getFragmentManager());
         mVpLoad.setAdapter(mAdapter);
         mVpLoad.addOnPageChangeListener(getListener());
-        PagerFragment fragment = (PagerFragment) mAdapter.getItem(0);
+//        PagerFragment fragment = (PagerFragment) mAdapter.getItem(0);
 //        fragment.showAnim();
     }
 
     @NonNull
     private ViewPager.OnPageChangeListener getListener() {
         return new ViewPager.OnPageChangeListener() {
+            ArgbEvaluator mEvaluator = getArgbEvaluator();
             @Override
             public void onPageScrolled(int position, float positionOffset, int
                     positionOffsetPixels) {
                 if (position == 0) {
+                    mVpLoad.setBackgroundColor((Integer) mEvaluator.evaluate(positionOffset, R.color
+                            .colorGreen, R.color.colorRed));
                     float v = 0.2f + 0.8f * positionOffset;
                     mRlPhone.setScaleX(v);
                     mRlPhone.setScaleY(v);
                     float v1 = mMainActivity.getWidth() / 3 * (positionOffset - 1);
                     mRlPhone.setTranslationX(v1);
-                    float v2 = mMainActivity.getHeight() / 8 * (1-positionOffset );
+                    float v2 = mMainActivity.getHeight() / 4 * (1 - positionOffset);
                     mRlPhone.setTranslationY(v2);
                     mIvPhoneShow.setAlpha(positionOffset);
                     return;
                 }
                 if (position == 1) {
+                    mVpLoad.setBackgroundColor((Integer) mEvaluator.evaluate(positionOffset, R.color
+                            .colorRed, R.color.colorYellow));
                     mRlPhone.setTranslationX(-positionOffsetPixels);
                 }
 
@@ -109,5 +127,19 @@ public class LoadFragment extends BaseFragment {
 
             }
         };
+    }
+
+    @OnClick({R.id.tv_load, R.id.tv_not_load})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_load:
+                break;
+            case R.id.tv_not_load:
+                FragmentManager manager = getFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+//                transaction.replace(R.id.fl_main, new MainFragment());
+                transaction.commit();
+                break;
+        }
     }
 }
