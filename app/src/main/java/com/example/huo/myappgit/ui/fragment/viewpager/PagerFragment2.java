@@ -45,6 +45,7 @@ public class PagerFragment2 extends BaseFragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view,savedInstanceState);
         mIvBubble1.setVisibility(View.INVISIBLE);
         mIvBubble2.setVisibility(View.INVISIBLE);
         mIvBubble3.setVisibility(View.INVISIBLE);

@@ -4,24 +4,29 @@ package com.example.huo.myappgit.ui.fragment;
 import android.animation.ArgbEvaluator;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.graphics.Typeface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.huo.myappgit.Entity.CurrentUser;
 import com.example.huo.myappgit.R;
 import com.example.huo.myappgit.adapter.LoadAdapter;
 import com.example.huo.myappgit.base.BaseFragment;
+import com.example.huo.myappgit.http.GitHubHttp;
 import com.example.huo.myappgit.ui.activity.MainActivity;
-import com.example.huo.myappgit.ui.fragment.viewpager.PagerFragment;
 
+import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -43,7 +48,7 @@ public class LoadFragment extends BaseFragment {
     ImageView mIvLoad2;
     ImageView[] icon;
     @BindView(R.id.iv_phone_show)
-    ImageView mIvPhoneShow;
+    ImageView      mIvPhoneShow;
     @BindView(R.id.rl_phone)
     RelativeLayout mRlPhone;
     MainActivity mMainActivity;
@@ -51,6 +56,12 @@ public class LoadFragment extends BaseFragment {
     TextView mTvLoad;
     @BindView(R.id.tv_not_load)
     TextView mTvNotLoad;
+    @BindColor(R.color.colorGreen)
+    int green;
+    @BindColor(R.color.colorRed)
+    int red;
+    @BindColor(R.color.colorYellow)
+    int yellow;
 
     public LoadFragment() {
         // Required empty public constructor
@@ -77,23 +88,21 @@ public class LoadFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view,savedInstanceState);
         mAdapter = new LoadAdapter(getFragmentManager());
         mVpLoad.setAdapter(mAdapter);
         mVpLoad.addOnPageChangeListener(getListener());
-//        PagerFragment fragment = (PagerFragment) mAdapter.getItem(0);
-//        fragment.showAnim();
     }
 
     @NonNull
     private ViewPager.OnPageChangeListener getListener() {
         return new ViewPager.OnPageChangeListener() {
-            ArgbEvaluator mEvaluator = getArgbEvaluator();
             @Override
-            public void onPageScrolled(int position, float positionOffset, int
-                    positionOffsetPixels) {
+            public void onPageScrolled(int position, float positionOffset,
+                                       int positionOffsetPixels) {
                 if (position == 0) {
-                    mVpLoad.setBackgroundColor((Integer) mEvaluator.evaluate(positionOffset, R.color
-                            .colorGreen, R.color.colorRed));
+                    mVpLoad.setBackgroundColor((Integer) getArgbEvaluator().evaluate
+                            (positionOffset, green, red));
                     float v = 0.2f + 0.8f * positionOffset;
                     mRlPhone.setScaleX(v);
                     mRlPhone.setScaleY(v);
@@ -105,8 +114,8 @@ public class LoadFragment extends BaseFragment {
                     return;
                 }
                 if (position == 1) {
-                    mVpLoad.setBackgroundColor((Integer) mEvaluator.evaluate(positionOffset, R.color
-                            .colorRed, R.color.colorYellow));
+                    mVpLoad.setBackgroundColor((Integer) getArgbEvaluator().evaluate
+                            (positionOffset, red, yellow));
                     mRlPhone.setTranslationX(-positionOffsetPixels);
                 }
 
@@ -115,8 +124,6 @@ public class LoadFragment extends BaseFragment {
             @Override
             public void onPageSelected(int position) {
                 for (ImageView imageView : icon) {
-                    Log.d(TAG, "onPageSelected: >>0");
-//                    icon[0].setImageResource(R.mipmap.icon_false);
                     imageView.setImageResource(R.mipmap.icon_false);
                 }
                 icon[position].setImageResource(R.mipmap.icon_ture);
@@ -133,12 +140,16 @@ public class LoadFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_load:
-                break;
-            case R.id.tv_not_load:
                 FragmentManager manager = getFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
-//                transaction.replace(R.id.fl_main, new MainFragment());
+                transaction.replace(R.id.fl_main, new LandFragment());
                 transaction.commit();
+                break;
+            case R.id.tv_not_load:
+                FragmentManager managerroot = getFragmentManager();
+                FragmentTransaction transactionroot = managerroot.beginTransaction();
+                transactionroot.replace(R.id.fl_main, new RootFragment());
+                transactionroot.commit();
                 break;
         }
     }

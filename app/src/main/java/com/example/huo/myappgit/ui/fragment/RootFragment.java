@@ -4,8 +4,18 @@ package com.example.huo.myappgit.ui.fragment;
 import android.animation.ArgbEvaluator;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -19,12 +29,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.example.huo.myappgit.Entity.CurrentUser;
 import com.example.huo.myappgit.R;
 import com.example.huo.myappgit.adapter.RootAdapter;
 import com.example.huo.myappgit.base.BaseFragment;
 import com.example.huo.myappgit.ui.activity.MainActivity;
 import com.example.huo.myappgit.ui.view.RoundImageView;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +48,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.content.res.Resources.*;
 import static com.example.huo.myappgit.ui.fragment.RootFragment.Type.COLLECT;
 import static com.example.huo.myappgit.ui.fragment.RootFragment.Type.DEVELOPER;
 import static com.example.huo.myappgit.ui.fragment.RootFragment.Type.DRY;
@@ -46,23 +63,24 @@ import static com.example.huo.myappgit.ui.fragment.RootFragment.Type.SHARE;
 public class RootFragment extends BaseFragment {
     private static final String TAG = "RootFragment";
     @BindView(R.id.layout_main)
-    View mView;
+    View                    mView;
     @BindView(R.id.navigationView)
-    NavigationView mNavigationView;
+    NavigationView          mNavigationView;
     @BindView(R.id.dl_root)
-    DrawerLayout mDlRoot;
+    DrawerLayout            mDlRoot;
     @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+    Toolbar                 mToolbar;
     @BindView(R.id.toolbar_layout)
     CollapsingToolbarLayout mToolbarLayout;
     @BindView(R.id.app_bar)
-    AppBarLayout mAppBar;
+    AppBarLayout            mAppBar;
     @BindView(R.id.fab)
-    FloatingActionButton mFab;
+    FloatingActionButton    mFab;
     private RootAdapter mAdapter;
     MainActivity mMainActivity;
     BaseFragment mFragment;
     Map<Type, BaseFragment> mFragmentMap = new HashMap<>();
+    private ImageView mImageIcon;
 
     public RootFragment() {
         // Required empty public constructor
@@ -74,6 +92,7 @@ public class RootFragment extends BaseFragment {
         mMainActivity = (MainActivity) getActivity();
         mAdapter = new RootAdapter(getFragmentManager());
         mFragment = MainFragment.newInstance(0);
+        replace(HOT);
     }
 
     @Override
@@ -82,12 +101,11 @@ public class RootFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_root, container, false);
         ButterKnife.bind(this, view);
-        mNavigationView.setCheckedItem(R.id.github_hot_repo);
+        mNavigationView.setCheckedItem(R.id.github_hot_repo);//默认选中
         mToolbar.setNavigationIcon(R.mipmap.ic_launcher);
 //        mToolbar.setLogo(R.mipmap.ic_launcher);
-        mToolbarLayout.setTitle("GitHub");
+//        mToolbarLayout.setTitle("GitHub");
         mToolbar.inflateMenu(R.menu.menu_main);
-        replace(HOT);
         return view;
     }
 
@@ -104,16 +122,27 @@ public class RootFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         mNavigationView.setNavigationItemSelectedListener(getListener());
         mToolbar.setOnMenuItemClickListener(getMenuListener());
         mToolbar.setNavigationOnClickListener(getIconListener());
         mDlRoot.addDrawerListener(getAnimListener());
         if (mNavigationView.getHeaderCount() > 0) {
             View headerView = mNavigationView.getHeaderView(0);
-            RoundImageView imageView = (RoundImageView) headerView.findViewById(R.id.rv_ss);
-            imageView.setOnClickListener(getL());
+            mImageIcon = (ImageView) headerView.findViewById(R.id.rv_ss);
+            mImageIcon.setOnClickListener(getL());
         }
+        init();
+        if (CurrentUser.isEmpty()) {
+            mToolbarLayout.setTitle("GitHub");
+            mImageIcon.setImageDrawable(createCircleImage(getResources().getDrawable(R.mipmap
+                    .github, null)));
+            return;
+        }
+        mToolbarLayout.setTitle(CurrentUser.getUser().getName());
+        ImageLoader.getInstance().displayImage(CurrentUser.getUser().getAvatar(), mImageIcon);
     }
+
 
     @NonNull
     private DrawerLayout.SimpleDrawerListener getAnimListener() {
@@ -121,8 +150,7 @@ public class RootFragment extends BaseFragment {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 mNavigationView.setBackgroundColor((Integer) getArgbEvaluator().evaluate
-                        (slideOffset,
-                        0x1826ca78, 0x8826ca78));
+                        (slideOffset, 0x1826ca78, 0x8826ca78));
                 float vX = 1f - 0.6f * slideOffset;
                 float vY = 1f - 0.2f * slideOffset;
                 mView.setScaleX(vX);
@@ -172,6 +200,8 @@ public class RootFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 mDlRoot.closeDrawer(mNavigationView);
+                if (CurrentUser.isEmpty())
+                    getFragmentTransaction().replace(R.id.fl_main, new LandFragment()).commit();
                 mMainActivity.showToast("啊哈");
             }
         };
@@ -208,7 +238,6 @@ public class RootFragment extends BaseFragment {
                         replace(SHARE);
                         return true;
                 }
-                Log.d(TAG, "onNavigationItemSelected:>>>>> " + item.getItemId());
                 return false;
             }
         };
@@ -249,6 +278,55 @@ public class RootFragment extends BaseFragment {
                 return MainFragment.newInstance(0);
         }
         return mFragment;
+    }
+
+    private void init() {
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .showImageForEmptyUri(R.mipmap.ic_avatar)
+                .showImageOnLoading(R.mipmap.ic_avatar)
+                .showImageOnFail(R.mipmap.ic_avatar)
+                .displayer(new RoundedBitmapDisplayer(getResources().getDimensionPixelOffset(R
+                        .dimen.dp_80)))
+                .cacheInMemory(true) // 打开内存缓存
+                .cacheOnDisk(true) // 打开硬盘缓存
+                .resetViewBeforeLoading(true)// 在ImageView加载前清除它上面之前的图片
+                .build();
+        // ImageLoader的配置
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getActivity())
+                .memoryCacheSize(5 * 1024 * 1024)// 设置内存缓存为5M
+                .defaultDisplayImageOptions(options)// 设置默认的显示选项
+                .build();
+        // 初始化ImageLoader
+        ImageLoader.getInstance().init(config);
+    }
+
+    private Drawable createCircleImage(Drawable drawable) {
+        Bitmap      source = ((BitmapDrawable) drawable).getBitmap();
+        final Paint paint  = new Paint();
+        paint.setAntiAlias(true);
+        int width  = source.getWidth();
+        int height = source.getHeight();
+        int min    = Math.min(width, height);
+        Log.d(TAG, "createCircleImage: >>>>>>>>>>>>>>>>>>>" + min + height + width);
+        Bitmap target = Bitmap.createBitmap(min, min, Bitmap.Config.ARGB_8888);
+        /**
+         * 产生一个同样大小的画布
+         */
+        Canvas canvas = new Canvas(target);
+        /**
+         * 首先绘制圆形
+         */
+        canvas.drawCircle(min / 2, min / 2, min / 2, paint);
+        /**
+         * 使用SRC_IN，参考上面的说明
+         */
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        /**
+         * 绘制图片
+         */
+        canvas.drawBitmap(source, 0, 0, paint);
+        drawable = new BitmapDrawable(getResources(), target);
+        return drawable;
     }
 
     enum Type {

@@ -4,15 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cv_gank"
-    android:paddingTop="@dimen/dp_20"
     android:layout_width="match_parent"
-    android:background="#559c9a0c"
     android:layout_height="@dimen/dp_140"
-    android:layout_centerVertical="true"
     android:layout_centerHorizontal="true"
-    android:orientation="horizontal">
+    android:layout_centerVertical="true"
+    android:background="#559c9a0c"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/dp_20">
 
-    <com.example.huo.myappgit.ui.view.RoundImageView
+    <ImageView
         android:id="@+id/rv_ss"
         android:layout_width="80dp"
         android:layout_height="80dp"

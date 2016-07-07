@@ -1,0 +1,19 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="com.example.huo.myappgit.ui.fragment.LandFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <WebView
+        android:id="@+id/wv_land"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/giv_gif"
+        android:background="#252525"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@mipmap/gif_loading"/>
+</FrameLayout>

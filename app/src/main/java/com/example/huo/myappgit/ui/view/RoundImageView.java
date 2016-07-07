@@ -20,6 +20,7 @@ import android.util.TypedValue;
 import android.widget.ImageView;
 
 import com.example.huo.myappgit.R;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 /**
  * Created by huo on 03/07/16.
@@ -114,12 +115,12 @@ public class RoundImageView extends ImageView {
      * @return
      */
     private Drawable createCircleImage(Drawable drawable) {
-        Bitmap source = ((BitmapDrawable) drawable).getBitmap();
-        final Paint paint = new Paint();
+        Bitmap      source = ((BitmapDrawable) drawable).getBitmap();
+        final Paint paint  = new Paint();
         paint.setAntiAlias(true);
-        int width = source.getWidth();
-        int height = source.getHeight();
-        int min = Math.min(width, height);
+        int    width  = source.getWidth();
+        int    height = source.getHeight();
+        int    min    = Math.min(width, height);
         Bitmap target = Bitmap.createBitmap(min, min, Bitmap.Config.ARGB_8888);
         /**
          * 产生一个同样大小的画布

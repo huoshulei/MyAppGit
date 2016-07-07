@@ -44,6 +44,7 @@ public class PagerFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view,savedInstanceState);
         mImageView.setVisibility(View.INVISIBLE);
         mImageView2.setVisibility(View.INVISIBLE);
         mAnimation1 = AnimationUtils.loadAnimation(getActivity(), R.anim.scale);

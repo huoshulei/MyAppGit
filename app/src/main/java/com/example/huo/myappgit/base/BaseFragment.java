@@ -4,6 +4,8 @@ import android.animation.ArgbEvaluator;
 import android.app.Fragment;
 import android.os.Bundle;
 
+import com.hannesdorfmann.mosby.mvp.MvpFragment;
+
 /**
  * Created by huo on 30/06/16.
  */

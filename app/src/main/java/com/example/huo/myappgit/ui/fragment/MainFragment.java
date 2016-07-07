@@ -59,20 +59,21 @@ public class MainFragment extends BaseFragment {
         return view;
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        ButterKnife.bind(this, view);
-//        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-//        mMainActivity.setSupportActionBar(toolbar);
-////            mTab.set
-//        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-    }
+//    @Override
+//    public void onViewCreated(View view, Bundle savedInstanceState) {
+//        super.onViewCreated(view,savedInstanceState);
+//        ButterKnife.bind(this, view);
+////        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+////        mMainActivity.setSupportActionBar(toolbar);
+//////            mTab.set
+////        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+////        fab.setOnClickListener(new View.OnClickListener() {
+////            @Override
+////            public void onClick(View view) {
+////                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+////                        .setAction("Action", null).show();
+////            }
+////        });
+//    }
 
 }
