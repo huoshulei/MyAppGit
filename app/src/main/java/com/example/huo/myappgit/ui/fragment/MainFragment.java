@@ -2,15 +2,14 @@ package com.example.huo.myappgit.ui.fragment;
 
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.huo.myappgit.R;
+import com.example.huo.myappgit.adapter.MainAdapter;
 import com.example.huo.myappgit.base.BaseFragment;
 import com.example.huo.myappgit.ui.activity.MainActivity;
 
@@ -22,11 +21,10 @@ import butterknife.ButterKnife;
  */
 public class MainFragment extends BaseFragment {
     MainActivity mMainActivity;
-//    @BindView(R.id.toolbar)
-//    Toolbar mToolbar;
-    @BindView(R.id.tab)
-    TabLayout mTab;
-
+    @BindView(R.id.tab_main)
+    TabLayout mTabMain;
+    @BindView(R.id.vp_main)
+    ViewPager mVpMain;
     private int mType;
 
     public MainFragment() {
@@ -54,26 +52,15 @@ public class MainFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.activity_scrolling, container, false);
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
 
-//    @Override
-//    public void onViewCreated(View view, Bundle savedInstanceState) {
-//        super.onViewCreated(view,savedInstanceState);
-//        ButterKnife.bind(this, view);
-////        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-////        mMainActivity.setSupportActionBar(toolbar);
-//////            mTab.set
-////        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-////        fab.setOnClickListener(new View.OnClickListener() {
-////            @Override
-////            public void onClick(View view) {
-////                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-////                        .setAction("Action", null).show();
-////            }
-////        });
-//    }
-
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mVpMain.setAdapter(new MainAdapter(getFragmentManager(), getActivity()));
+        mTabMain.setupWithViewPager(mVpMain);
+    }
 }

@@ -25,8 +25,7 @@ public class LoginPresentor extends MvpNullObjectBasePresenter<LoginView> {
     private static final String TAG = "LoginPresentor";
 
     public void login(String code) {
-//        getView().showProgress();
-        Log.d(TAG, "login: <><><><><><><>" + getView().showProgress());
+        getView().showProgress();
         if (mEntityCall == null)
             mEntityCall = GitHubHttp.getGitHubHttp().getOAuthToken(GitHubApi.GITHUB_ID, GitHubApi
                     .GITHUB_SECRET, code);

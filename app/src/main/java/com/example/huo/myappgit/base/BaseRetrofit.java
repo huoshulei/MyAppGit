@@ -1,5 +1,8 @@
 package com.example.huo.myappgit.base;
 
+import com.example.huo.myappgit.Entity.GitHubItemEntity;
+import com.example.huo.myappgit.http.GitHubRetrofit;
+
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -18,19 +21,21 @@ import rx.schedulers.Schedulers;
  */
 
 public abstract class BaseRetrofit<T, V> {
-    Retrofit mRetrofit;
-    String BASE_URL = "http://gank.io/";
+    protected Retrofit mRetrofit;
+    private final String BASE_URL = "http://api.github.com/";
     RxJavaListener mRxJavaListener;
     BaseEntityFunc mBaseEntityFunc;
 
     public BaseRetrofit() {
-        OkHttpClient.Builder client = new OkHttpClient.Builder();
-        client.connectTimeout(5, TimeUnit.SECONDS);
-        mRetrofit = new Retrofit.Builder().baseUrl(BASE_URL)
-                .client(client.build())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        if (mRetrofit == null) {
+            OkHttpClient.Builder client = new OkHttpClient.Builder();
+            client.connectTimeout(5, TimeUnit.SECONDS);
+            mRetrofit = new Retrofit.Builder().baseUrl(BASE_URL)
+                    .client(client.build())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .build();
+        }
     }
 
     protected abstract Observable<T> getObservable();
@@ -54,7 +59,7 @@ public abstract class BaseRetrofit<T, V> {
 
             @Override
             public void onError(Throwable e) {
-                mRxJavaListener.onError();
+                mRxJavaListener.onError(e);
             }
 
             @Override
@@ -74,10 +79,10 @@ public abstract class BaseRetrofit<T, V> {
         mBaseEntityFunc = baseEntityFunc;
     }
 
-    interface RxJavaListener {
+    public interface RxJavaListener {
         void onNext(List t);
 
-        void onError();
+        void onError(Throwable e);
     }
 
     public abstract class BaseEntityFunc implements Func1<T, List<V>> {

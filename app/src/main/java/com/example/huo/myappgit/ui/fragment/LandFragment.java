@@ -85,6 +85,7 @@ public class LandFragment extends MvpFragmentV7<LoginView, LoginPresentor> imple
                 Uri uri = Uri.parse(url);
                 if (GitHubApi.GITHUB_BACK.equals(uri.getScheme())) {
                     String code = uri.getQueryParameter("code");
+
                     getPresenter().login(code);
                     return true;
                 }
@@ -130,7 +131,6 @@ public class LandFragment extends MvpFragmentV7<LoginView, LoginPresentor> imple
 
     @Override
     public void navigateToMain() {
-        Log.d(TAG, "navigateToMainlogin: <><><><><><><>");
         FragmentManager     manager             = getFragmentManager();
         FragmentTransaction fragmentTransaction = manager.beginTransaction();
         fragmentTransaction.replace(R.id.fl_main, new RootFragment())
