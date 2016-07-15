@@ -11,6 +11,7 @@ import com.example.huo.myappgit.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by huo on 08/07/16.
@@ -30,5 +31,10 @@ public class HotAdapter extends BaseQuickAdapter<GitHubItemEntity> {
         baseViewHolder.setText(R.id.tv_watchers, gitHubItemEntity.getWatchers());
         ImageView view = baseViewHolder.getView(R.id.iv_icon);
         ImageLoader.getInstance().displayImage(gitHubItemEntity.getOwner().getAvatar_url(), view);
+    }
+
+    @Override
+    public void openLoadAnimation() {
+        super.openLoadAnimation(new Random().nextInt(5)+1);
     }
 }

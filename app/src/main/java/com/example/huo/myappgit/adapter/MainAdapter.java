@@ -16,6 +16,7 @@ import java.util.List;
 
 public class MainAdapter extends FragmentPagerAdapter {
     private List<Language> mLanguages;
+    private boolean isNotify = false;
 
     public MainAdapter(FragmentManager fm, Context context) {
         super(fm);
@@ -30,6 +31,18 @@ public class MainAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return mLanguages.size();
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        isNotify = true;
+        super.notifyDataSetChanged();
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        if (isNotify)return POSITION_NONE;
+        return super.getItemPosition(object);
     }
 
     @Override

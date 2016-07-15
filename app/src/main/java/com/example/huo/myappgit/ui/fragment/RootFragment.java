@@ -17,9 +17,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -169,7 +171,6 @@ public class RootFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 mDlRoot.openDrawer(mNavigationView);
-                mMainActivity.showToast("顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶");
             }
         };
     }
@@ -201,7 +202,6 @@ public class RootFragment extends BaseFragment {
                 mDlRoot.closeDrawer(mNavigationView);
                 if (CurrentUser.isEmpty())
                     getFragmentTransaction().replace(R.id.fl_main, new LandFragment()).commit();
-                mMainActivity.showToast("啊哈");
             }
         };
     }
@@ -213,12 +213,12 @@ public class RootFragment extends BaseFragment {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 mDlRoot.closeDrawer(mNavigationView);
-                mMainActivity.showToast(item.getTitle().toString());
                 switch (item.getItemId()) {
                     case R.id.github_hot_repo:
                         replace(HOT);
                         return true;
                     case R.id.github_hot_coder:
+                        mMainActivity.showToast(item.getTitle().toString());
                         replace(DEVELOPER);
                         return true;
                     case R.id.github_trend:
@@ -284,10 +284,9 @@ public class RootFragment extends BaseFragment {
         Bitmap      source = ((BitmapDrawable) drawable).getBitmap();
         final Paint paint  = new Paint();
         paint.setAntiAlias(true);
-        int width  = source.getWidth();
-        int height = source.getHeight();
-        int min    = Math.min(width, height);
-        Log.d(TAG, "createCircleImage: >>>>>>>>>>>>>>>>>>>" + min + height + width);
+        int    width  = source.getWidth();
+        int    height = source.getHeight();
+        int    min    = Math.min(width, height);
         Bitmap target = Bitmap.createBitmap(min, min, Bitmap.Config.ARGB_8888);
         /**
          * 产生一个同样大小的画布

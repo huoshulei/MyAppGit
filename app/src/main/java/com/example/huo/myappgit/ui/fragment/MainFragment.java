@@ -13,6 +13,8 @@ import com.example.huo.myappgit.adapter.MainAdapter;
 import com.example.huo.myappgit.base.BaseFragment;
 import com.example.huo.myappgit.ui.activity.MainActivity;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -25,7 +27,8 @@ public class MainFragment extends BaseFragment {
     TabLayout mTabMain;
     @BindView(R.id.vp_main)
     ViewPager mVpMain;
-    private int mType;
+    private int         mType;
+    private MainAdapter mAdapter;
 
     public MainFragment() {
         // Required empty public constructor
@@ -46,6 +49,7 @@ public class MainFragment extends BaseFragment {
         if (getArguments() != null)
             mType = getArguments().getInt("TYPE");
         mMainActivity = (MainActivity) getActivity();
+        mAdapter = new MainAdapter(getFragmentManager(), getActivity());
     }
 
     @Override
@@ -60,7 +64,8 @@ public class MainFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mVpMain.setAdapter(new MainAdapter(getFragmentManager(), getActivity()));
+        mVpMain.setAdapter(mAdapter);
         mTabMain.setupWithViewPager(mVpMain);
+        mAdapter.notifyDataSetChanged();
     }
 }

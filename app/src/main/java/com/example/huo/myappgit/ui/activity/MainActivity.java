@@ -3,6 +3,7 @@ package com.example.huo.myappgit.ui.activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetBehavior;
 import android.widget.FrameLayout;
 
 import com.example.huo.myappgit.R;
@@ -13,8 +14,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity {
-
-
     @Override
     public void initView() {
         setContentView(R.layout.activity_main);
